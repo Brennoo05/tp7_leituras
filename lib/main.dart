@@ -217,7 +217,7 @@ class _HomePageState extends State<HomePage> {
             trailing: IconButton(
               icon: const Icon(Icons.delete_outline),
               tooltip: 'Remover',
-              onPressed: () => _removerLivro(index),
+              onPressed: () => _confirmarRemocao(index),
             ),
           ),
         );
