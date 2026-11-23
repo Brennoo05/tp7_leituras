@@ -149,6 +149,30 @@ class _HomePageState extends State<HomePage> {
     _mostrarMensagem('"${removido.titulo}" removido da lista.');
   }
 
+  Future<void> _confirmarRemocao(int index) async {
+    final confirmou = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Remover livro'),
+        content: Text('Deseja remover "${_livros[index].titulo}" da lista?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Remover'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmou == true) {
+      await _removerLivro(index);
+    }
+  }
+  
   void _mostrarMensagem(String texto) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
