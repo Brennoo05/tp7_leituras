@@ -168,6 +168,22 @@ class _HomePageState extends State<HomePage> {
       ),
     );
 
+    Future<void> _alterarStatus(int index) async {
+    final atual = _livros[index];
+    final proximo = statusLeitura[
+        (statusLeitura.indexOf(atual.status) + 1) % statusLeitura.length];
+
+    setState(() {
+      _livros[index] =
+          Livro(titulo: atual.titulo, autor: atual.autor, status: proximo);
+    });
+    await _salvarLivros();
+
+    if (!mounted) return;
+    _mostrarMensagem('"${atual.titulo}" agora está como "$proximo".');
+  }
+
+    
     if (confirmou == true) {
       await _removerLivro(index);
     }
@@ -211,6 +227,7 @@ class _HomePageState extends State<HomePage> {
         return Card(
           margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           child: ListTile(
+            onTap: () => _alterarStatus(index),
             leading: Icon(_iconeDoStatus(livro.status)),
             title: Text(livro.titulo),
             subtitle: Text('${livro.autor} • ${livro.status}'),
