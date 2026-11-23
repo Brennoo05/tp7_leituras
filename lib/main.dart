@@ -220,25 +220,42 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    return ListView.builder(
-      itemCount: _livros.length,
-      itemBuilder: (context, index) {
-        final livro = _livros[index];
-        return Card(
-          margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          child: ListTile(
-            onTap: () => _alterarStatus(index),
-            leading: Icon(_iconeDoStatus(livro.status)),
-            title: Text(livro.titulo),
-            subtitle: Text('${livro.autor} • ${livro.status}'),
-            trailing: IconButton(
-              icon: const Icon(Icons.delete_outline),
-              tooltip: 'Remover',
-              onPressed: () => _confirmarRemocao(index),
-            ),
+        final concluidos =
+        _livros.where((livro) => livro.status == 'Concluído').length;
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(12),
+          child: Text(
+            '${_livros.length} livro(s) • $concluidos concluído(s)',
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-        );
-      },
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _livros.length,
+            itemBuilder: (context, index) {
+              final livro = _livros[index];
+              return Card(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                child: ListTile(
+                  onTap: () => _alterarStatus(index),
+                  leading: Icon(_iconeDoStatus(livro.status)),
+                  title: Text(livro.titulo),
+                  subtitle: Text('${livro.autor} • ${livro.status}'),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete_outline),
+                    tooltip: 'Remover',
+                    onPressed: () => _confirmarRemocao(index),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
